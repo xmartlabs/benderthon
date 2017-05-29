@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import argparse
 import os
-import sys
 
 import tensorflow as tf
 from tensorflow.python.framework import graph_io, graph_util
@@ -50,7 +49,7 @@ def save_graph_only(sess, output_file_path, output_node_names):
         node.device = ''
     graph_def = graph_util.extract_sub_graph(sess.graph_def, output_node_names)
     output_dir, output_filename = os.path.split(output_file_path)
-    graph_io.write_graph(graph_def, output_dir, output_filename, as_text=False)
+    graph_io.write_graph(graph_def, output_dir, output_filename, as_text=True)
 
 
 def save_graph_only_from_checkpoint(input_checkpoint, output_file_path, output_node_names):
