@@ -73,22 +73,3 @@ def save_graph_only_from_checkpoint(input_checkpoint, output_file_path, output_n
 #         saver.save(sess, 'a', write_meta_graph=False, write_state=False)
 #
 #         # TODO
-
-
-def _main():
-    parser = argparse.ArgumentParser(
-        description="Utility to easily convert TensorFlow checkpoints into minimal frozen graphs in binary protobuf "
-                    "format.")
-    parser.add_argument('input_checkpoint', help="checkpoint path to load")
-    parser.add_argument('output_file', help="file to save the binary protobuf graph")
-    parser.add_argument('output_node_names', help="the name of the output nodes, comma separated")
-    parser.add_argument('--no-weights', action='store_true',
-                        help="indicate that the variables are not converted to consts")
-    args = parser.parse_args()
-    if args.no_weights:
-        save_graph_only_from_checkpoint(args.input_checkpoint, args.output_file, args.output_node_names)
-    else:
-        freeze_from_checkpoint(args.input_checkpoint, args.output_file, args.output_node_names)
-
-if __name__ == '__main__':
-    _main()

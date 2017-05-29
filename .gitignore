@@ -1,3 +1,6 @@
+*.egg-info
+build
 checkpoints
 data
+dist
 output

@@ -6,6 +6,12 @@ Currently there's only *tf_freezer*, but we are working on more stuff!
 
 Works on Python 2.7.+ and 3.+, with Tensorflow 1.2+.
 
+To install:
+
+```bash
+pip install plutils
+```
+
 ## tf_freezer
 
 Utility to convert **TensorFlow** checkpoints into minimal frozen **graphs**.
@@ -15,7 +21,7 @@ Utility to convert **TensorFlow** checkpoints into minimal frozen **graphs**.
 To take the checkpoint in `checkpoint_path.ckpt`, whose output is yielded by the node named `Tanh`, and save it to `graph_with_weights.pb`:
 
 ```bash
-./tf_freezer.py checkpoint_path.ckpt graph_with_weights.pb Tanh
+palutils freeze checkpoint_path.ckpt graph_with_weights.pb Tanh
 ```
 
 ### Sample
@@ -29,7 +35,7 @@ The file `sample.py` contains a 2-hidden layer network example for MNIST dataset
 Then you can get a minimal protobuf version with the weights frozen:
 
 ```bash
-./tf_freezer.py checkpoints/mnist.ckpt output/mnist.pb Prediction
+palutils freeze checkpoints/mnist.ckpt output/mnist.pb Prediction
 ```
 
 The generated file occupies **half** the original checkpoints (14.4MB to 7.2MB).
@@ -38,7 +44,7 @@ The generated file occupies **half** the original checkpoints (14.4MB to 7.2MB).
 You can also get only the graph, which occupies just **10.8kB**:
 
 ```bash
-./tf_freezer.py --no-weights checkpoints/mnist.ckpt output/mnist_only_graph.pb Prediction
+palutils freeze --no-weights checkpoints/mnist.ckpt output/mnist_only_graph.pb Prediction
 ```
 
 ## License
