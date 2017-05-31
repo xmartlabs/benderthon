@@ -22,6 +22,48 @@ node {
   }
 }
 node {
+  name: "Reshape/shape"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\377\377\377\377\034\000\000\000\034\000\000\000\001\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "Reshape"
+  op: "Reshape"
+  input: "Placeholder"
+  input: "Reshape/shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
   name: "Variable"
   op: "VariableV2"
   attr {
@@ -41,10 +83,16 @@ node {
     value {
       shape {
         dim {
-          size: 784
+          size: 5
         }
         dim {
-          size: 1000
+          size: 5
+        }
+        dim {
+          size: 1
+        }
+        dim {
+          size: 32
         }
       }
     }
@@ -76,6 +124,139 @@ node {
   }
 }
 node {
+  name: "Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 32
+          }
+        }
+        float_val: 0.10000000149
+      }
+    }
+  }
+}
+node {
+  name: "Conv2D"
+  op: "Conv2D"
+  input: "Reshape"
+  input: "Variable/read"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "SAME"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "use_cudnn_on_gpu"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "add"
+  op: "Add"
+  input: "Conv2D"
+  input: "Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "Relu"
+  op: "Relu"
+  input: "add"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "MaxPool"
+  op: "MaxPool"
+  input: "Relu"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "ksize"
+    value {
+      list {
+        i: 1
+        i: 2
+        i: 2
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "SAME"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 2
+        i: 2
+        i: 1
+      }
+    }
+  }
+}
+node {
   name: "Variable_1"
   op: "VariableV2"
   attr {
@@ -95,7 +276,16 @@ node {
     value {
       shape {
         dim {
-          size: 1000
+          size: 5
+        }
+        dim {
+          size: 5
+        }
+        dim {
+          size: 32
+        }
+        dim {
+          size: 64
         }
       }
     }
@@ -127,10 +317,263 @@ node {
   }
 }
 node {
+  name: "Const_1"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 64
+          }
+        }
+        float_val: 0.10000000149
+      }
+    }
+  }
+}
+node {
+  name: "Conv2D_1"
+  op: "Conv2D"
+  input: "MaxPool"
+  input: "Variable_1/read"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "SAME"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "use_cudnn_on_gpu"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "add_1"
+  op: "Add"
+  input: "Conv2D_1"
+  input: "Const_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "Relu_1"
+  op: "Relu"
+  input: "add_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "MaxPool_1"
+  op: "MaxPool"
+  input: "Relu_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "ksize"
+    value {
+      list {
+        i: 1
+        i: 2
+        i: 2
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "SAME"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 2
+        i: 2
+        i: 1
+      }
+    }
+  }
+}
+node {
+  name: "Variable_2"
+  op: "VariableV2"
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 3136
+        }
+        dim {
+          size: 1024
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "Variable_2/read"
+  op: "Identity"
+  input: "Variable_2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@Variable_2"
+      }
+    }
+  }
+}
+node {
+  name: "Const_2"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 1024
+          }
+        }
+        float_val: 0.10000000149
+      }
+    }
+  }
+}
+node {
+  name: "Reshape_1/shape"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 2
+          }
+        }
+        tensor_content: "\377\377\377\377@\014\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "Reshape_1"
+  op: "Reshape"
+  input: "MaxPool_1"
+  input: "Reshape_1/shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
   name: "MatMul"
   op: "MatMul"
-  input: "Placeholder"
-  input: "Variable/read"
+  input: "Reshape_1"
+  input: "Variable_2/read"
   attr {
     key: "T"
     value {
@@ -151,10 +594,10 @@ node {
   }
 }
 node {
-  name: "add"
+  name: "add_2"
   op: "Add"
   input: "MatMul"
-  input: "Variable_1/read"
+  input: "Const_2"
   attr {
     key: "T"
     value {
@@ -163,9 +606,9 @@ node {
   }
 }
 node {
-  name: "Relu"
+  name: "Relu_2"
   op: "Relu"
-  input: "add"
+  input: "add_2"
   attr {
     key: "T"
     value {
@@ -194,7 +637,7 @@ node {
 node {
   name: "dropout/Shape"
   op: "Shape"
-  input: "Relu"
+  input: "Relu_2"
   attr {
     key: "T"
     value {
@@ -269,13 +712,13 @@ node {
   attr {
     key: "seed"
     value {
-      i: 87654321
+      i: 0
     }
   }
   attr {
     key: "seed2"
     value {
-      i: 24
+      i: 0
     }
   }
 }
@@ -341,7 +784,7 @@ node {
 node {
   name: "dropout/div"
   op: "RealDiv"
-  input: "Relu"
+  input: "Relu_2"
   input: "Placeholder_2"
   attr {
     key: "T"
@@ -359,60 +802,6 @@ node {
     key: "T"
     value {
       type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "Variable_2"
-  op: "VariableV2"
-  attr {
-    key: "container"
-    value {
-      s: ""
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "shape"
-    value {
-      shape {
-        dim {
-          size: 1000
-        }
-        dim {
-          size: 1000
-        }
-      }
-    }
-  }
-  attr {
-    key: "shared_name"
-    value {
-      s: ""
-    }
-  }
-}
-node {
-  name: "Variable_2/read"
-  op: "Identity"
-  input: "Variable_2"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@Variable_2"
-      }
     }
   }
 }
@@ -436,7 +825,10 @@ node {
     value {
       shape {
         dim {
-          size: 1000
+          size: 1024
+        }
+        dim {
+          size: 10
         }
       }
     }
@@ -468,351 +860,34 @@ node {
   }
 }
 node {
+  name: "Const_3"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 10
+          }
+        }
+        float_val: 0.10000000149
+      }
+    }
+  }
+}
+node {
   name: "MatMul_1"
   op: "MatMul"
   input: "dropout/mul"
-  input: "Variable_2/read"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "transpose_a"
-    value {
-      b: false
-    }
-  }
-  attr {
-    key: "transpose_b"
-    value {
-      b: false
-    }
-  }
-}
-node {
-  name: "add_1"
-  op: "Add"
-  input: "MatMul_1"
   input: "Variable_3/read"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "Relu_1"
-  op: "Relu"
-  input: "add_1"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "Placeholder_3"
-  op: "Placeholder"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "shape"
-    value {
-      shape {
-        unknown_rank: true
-      }
-    }
-  }
-}
-node {
-  name: "dropout_1/Shape"
-  op: "Shape"
-  input: "Relu_1"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "out_type"
-    value {
-      type: DT_INT32
-    }
-  }
-}
-node {
-  name: "dropout_1/random_uniform/min"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-        }
-        float_val: 0.0
-      }
-    }
-  }
-}
-node {
-  name: "dropout_1/random_uniform/max"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-        }
-        float_val: 1.0
-      }
-    }
-  }
-}
-node {
-  name: "dropout_1/random_uniform/RandomUniform"
-  op: "RandomUniform"
-  input: "dropout_1/Shape"
-  attr {
-    key: "T"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "seed"
-    value {
-      i: 87654321
-    }
-  }
-  attr {
-    key: "seed2"
-    value {
-      i: 24
-    }
-  }
-}
-node {
-  name: "dropout_1/random_uniform/sub"
-  op: "Sub"
-  input: "dropout_1/random_uniform/max"
-  input: "dropout_1/random_uniform/min"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "dropout_1/random_uniform/mul"
-  op: "Mul"
-  input: "dropout_1/random_uniform/RandomUniform"
-  input: "dropout_1/random_uniform/sub"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "dropout_1/random_uniform"
-  op: "Add"
-  input: "dropout_1/random_uniform/mul"
-  input: "dropout_1/random_uniform/min"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "dropout_1/add"
-  op: "Add"
-  input: "Placeholder_3"
-  input: "dropout_1/random_uniform"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "dropout_1/Floor"
-  op: "Floor"
-  input: "dropout_1/add"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "dropout_1/div"
-  op: "RealDiv"
-  input: "Relu_1"
-  input: "Placeholder_3"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "dropout_1/mul"
-  op: "Mul"
-  input: "dropout_1/div"
-  input: "dropout_1/Floor"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "Variable_4"
-  op: "VariableV2"
-  attr {
-    key: "container"
-    value {
-      s: ""
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "shape"
-    value {
-      shape {
-        dim {
-          size: 1000
-        }
-        dim {
-          size: 10
-        }
-      }
-    }
-  }
-  attr {
-    key: "shared_name"
-    value {
-      s: ""
-    }
-  }
-}
-node {
-  name: "Variable_4/read"
-  op: "Identity"
-  input: "Variable_4"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@Variable_4"
-      }
-    }
-  }
-}
-node {
-  name: "Variable_5"
-  op: "VariableV2"
-  attr {
-    key: "container"
-    value {
-      s: ""
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "shape"
-    value {
-      shape {
-        dim {
-          size: 10
-        }
-      }
-    }
-  }
-  attr {
-    key: "shared_name"
-    value {
-      s: ""
-    }
-  }
-}
-node {
-  name: "Variable_5/read"
-  op: "Identity"
-  input: "Variable_5"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@Variable_5"
-      }
-    }
-  }
-}
-node {
-  name: "MatMul_2"
-  op: "MatMul"
-  input: "dropout_1/mul"
-  input: "Variable_4/read"
   attr {
     key: "T"
     value {
@@ -835,8 +910,8 @@ node {
 node {
   name: "Prediction"
   op: "Add"
-  input: "MatMul_2"
-  input: "Variable_5/read"
+  input: "MatMul_1"
+  input: "Const_3"
   attr {
     key: "T"
     value {
