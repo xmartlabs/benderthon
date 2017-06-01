@@ -9,7 +9,7 @@ Works on Python 2.7.+ and 3.+, with Tensorflow 1.2+.
 To install:
 
 ```bash
-pip install plutils
+pip install palutils
 ```
 
 ## tf_freezer
