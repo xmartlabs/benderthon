@@ -1,6 +1,11 @@
 *.egg-info
 build
 checkpoints
+!checkpoints/.keep
 data
+!data/.keep
 dist
 output
+!output/.keep
+weights
+!weights/.keep
