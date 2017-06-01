@@ -47,6 +47,12 @@ You can also get only the graph, which occupies just **13kB**:
 benderthon tf-freeze --no-weights checkpoints/mnist.ckpt output/mnist_only_graph.pb Prediction
 ```
 
+To save the weights in a separate path for later processing:
+
+```bash
+benderthon tf-freeze --only-weights checkpoints/mnist.ckpt weights/ Prediction
+```
+
 ## Development
 
 This utility is under development and the API **is not stable**. So, do not heavily rely on it.

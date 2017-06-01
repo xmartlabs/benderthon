@@ -56,16 +56,33 @@ def save_graph_only_from_checkpoint(input_checkpoint, output_file_path, output_n
         restore_from_checkpoint(sess, input_checkpoint)
         save_graph_only(sess, output_file_path, output_node_names)
 
-# def save_weights_only_from_checkpoint(input_checkpoint, output_file_path, output_node_names):
-#     """Save the weight values of the checkpoints in a format that can be read by Bender."""
-#     _check_input_checkpoint(input_checkpoint)
-#
-#     output_node_names = _output_node_names_string_as_list(output_node_names)
-#
-#     with tf.Session() as sess:
-#         _restore_from_checkpoint(sess, input_checkpoint)
-#
-#         saver = tf.train.Saver()
-#         saver.save(sess, 'a', write_meta_graph=False, write_state=False)
-#
-#         # TODO
+
+def save_weights(sess, output_path, conv_vars=None, conv_transpose_vars=None):
+    """Save the weights of the trainable variables, each one in a different file in output_path."""
+    if not conv_vars:
+        conv_vars = []
+
+    if not conv_transpose_vars:
+        conv_transpose_vars = []
+
+    for var in tf.trainable_variables():
+        filename = '{}-{}'.format(output_path, var.name.replace(':', '-'))
+
+        if var.name in conv_vars:
+            var = tf.transpose(var, perm=[3, 0, 1, 2])
+        elif var.name in conv_transpose_vars:
+            var = tf.transpose(var, perm=[3, 1, 0, 2])
+
+        value = sess.run(var)
+
+        with open(filename, b'w') as file_:
+            value.tofile(file_)
+
+
+def save_weights_from_checkpoint(input_checkpoint, output_path, conv_vars=None, conv_transpose_vars=None):
+    """Save the weights of the trainable variables given a checkpoint, each one in a different file in output_path."""
+    check_input_checkpoint(input_checkpoint)
+
+    with tf.Session() as sess:
+        restore_from_checkpoint(sess, input_checkpoint)
+        save_weights(sess, output_path, conv_vars=conv_vars, conv_transpose_vars=conv_transpose_vars)
