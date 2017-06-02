@@ -1,12 +1,15 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
+
+import pypandoc
 
 setup(
     name="benderthon",
     version="0.1.0",
-    description="TODO",
-    long_description="TODO",
-    url="TODO",
+    description="Set of utilities to work easier with Bender.",
+    long_description=pypandoc.convert('README.md', 'rst'),
+    url="https://github.com/xmartlabs/benderthon",
     keywords=["Bender", "machine learning", "artificial intelligence", "freeze", "model", "utility", "utilities",
               "TensorFlow"],
     classifiers=[

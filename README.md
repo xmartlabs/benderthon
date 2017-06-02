@@ -51,6 +51,8 @@ benderthon tf-freeze --no-weights checkpoints/mnist.ckpt output/mnist_only_graph
 
 This utility is under development and the API **is not stable**. So, do not heavily rely on it.
 
+To install locally you should do ```./setup.py install```, but first have [pandoc](http://pandoc.org/) and [pypandoc](https://github.com/bebraw/pypandoc) installed.
+
 ## License
 
 ```
