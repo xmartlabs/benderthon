@@ -3,5 +3,5 @@
 set -e
 
 ./sample.py
-palutils/cmdline.py freeze --no-weights checkpoints/mnist.ckpt output/g2.pb Prediction
+benderthon/cmdline.py tf-freeze --no-weights checkpoints/mnist.ckpt output/g2.pb Prediction
 diff testdata/g.pb output/g2.pb
