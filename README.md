@@ -26,7 +26,7 @@ benderthon tf-freeze checkpoint_path.ckpt graph_with_weights.pb Tanh
 
 ### Sample
 
-The file `sample.py` contains a 2-hidden layer network example for MNIST dataset. If you run it, it will generate checkpoints files with prefix `checkpoints/mnist.ckpt`:
+The file `sample.py` contains a network example for MNIST dataset with 2 convolutional layers and 2 dens layers. If you run it, it will generate checkpoints files with prefix `checkpoints/mnist.ckpt`:
 
 ```bash
 ./sample.py
@@ -38,10 +38,10 @@ Then you can get a minimal protobuf version with the weights frozen:
 benderthon tf-freeze checkpoints/mnist.ckpt output/mnist.pb Prediction
 ```
 
-The generated file occupies **half** the original checkpoints (14.4MB to 7.2MB).
+The generated file occupies **half** the original checkpoints (26MB to 13MB).
 
 
-You can also get only the graph, which occupies just **10.8kB**:
+You can also get only the graph, which occupies just **13kB**:
 
 ```bash
 benderthon tf-freeze --no-weights checkpoints/mnist.ckpt output/mnist_only_graph.pb Prediction
