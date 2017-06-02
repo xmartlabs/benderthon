@@ -2,12 +2,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="palutils",
+    name="benderthon",
     version="0.1.0",
     description="TODO",
     long_description="TODO",
     url="TODO",
-    keywords=["Palladium", "machine learning", "artificial intelligence", "freeze", "model", "utility", "utilities",
+    keywords=["Bender", "machine learning", "artificial intelligence", "freeze", "model", "utility", "utilities",
               "TensorFlow"],
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -30,7 +30,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'palutils = palutils.cmdline:main',
+            'benderthon = benderthon.cmdline:main',
         ],
     },
     install_requires=[

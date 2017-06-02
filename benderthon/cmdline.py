@@ -1,14 +1,17 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""Set of utilities to work easier with Bender."""
+
 import argparse
 
-from palutils import tf_freezer
+from benderthon import tf_freeze
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Set of utilities for Palladium.")
+    parser = argparse.ArgumentParser(description="Set of utilities for Bender.")
     subparsers = parser.add_subparsers()
 
-    parser_freeze = subparsers.add_parser('freeze',
+    parser_freeze = subparsers.add_parser('tf-freeze',
                                           help="Utility to easily convert TensorFlow checkpoints into minimal frozen "
                                                "graphs in binary protobuf format.")
     parser_freeze.add_argument('input_checkpoint', help="checkpoint path to load")
@@ -18,9 +21,9 @@ def main():
                                help="indicate that the variables are not converted to consts")
     args = parser.parse_args()
     if args.no_weights:
-        tf_freezer.save_graph_only_from_checkpoint(args.input_checkpoint, args.output_file, args.output_node_names)
+        tf_freeze.save_graph_only_from_checkpoint(args.input_checkpoint, args.output_file, args.output_node_names)
     else:
-        tf_freezer.freeze_from_checkpoint(args.input_checkpoint, args.output_file, args.output_node_names)
+        tf_freeze.freeze_from_checkpoint(args.input_checkpoint, args.output_file, args.output_node_names)
 
 
 if __name__ == '__main__':

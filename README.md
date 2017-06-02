@@ -1,18 +1,18 @@
-# palutils
+# benderthon
 
-Set of utilities to work easier with Palladium.
+Set of utilities to work easier with [Bender](https://github.com/xmartlabs/Bender).
 
-Currently there's only *tf_freezer*, but we are working on more stuff!
+Currently there's only *tf-freeze*, but we are working on more stuff!
 
 Works on Python 2.7.+ and 3.+, with Tensorflow 1.2+.
 
 To install:
 
 ```bash
-pip install palutils
+pip install benderthon
 ```
 
-## tf_freezer
+## tf-freeze
 
 Utility to convert **TensorFlow** checkpoints into minimal frozen **graphs**.
 
@@ -21,7 +21,7 @@ Utility to convert **TensorFlow** checkpoints into minimal frozen **graphs**.
 To take the checkpoint in `checkpoint_path.ckpt`, whose output is yielded by the node named `Tanh`, and save it to `graph_with_weights.pb`:
 
 ```bash
-palutils freeze checkpoint_path.ckpt graph_with_weights.pb Tanh
+benderthon tf-freeze checkpoint_path.ckpt graph_with_weights.pb Tanh
 ```
 
 ### Sample
@@ -35,7 +35,7 @@ The file `sample.py` contains a 2-hidden layer network example for MNIST dataset
 Then you can get a minimal protobuf version with the weights frozen:
 
 ```bash
-palutils freeze checkpoints/mnist.ckpt output/mnist.pb Prediction
+benderthon tf-freeze checkpoints/mnist.ckpt output/mnist.pb Prediction
 ```
 
 The generated file occupies **half** the original checkpoints (14.4MB to 7.2MB).
@@ -44,8 +44,12 @@ The generated file occupies **half** the original checkpoints (14.4MB to 7.2MB).
 You can also get only the graph, which occupies just **10.8kB**:
 
 ```bash
-palutils freeze --no-weights checkpoints/mnist.ckpt output/mnist_only_graph.pb Prediction
+benderthon tf-freeze --no-weights checkpoints/mnist.ckpt output/mnist_only_graph.pb Prediction
 ```
+
+## Development
+
+This utility is under development and the API **is not stable**. So, do not heavily rely on it.
 
 ## License
 
