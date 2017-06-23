@@ -53,6 +53,16 @@ To save the weights in a separate path for later processing:
 benderthon tf-freeze --only-weights checkpoints/mnist.ckpt weights/ Prediction
 ```
 
+## caffe-freeze
+
+You need `caffeflow` first:
+
+```bash
+pip install -e git://github.com/xmartlabs/caffeflow.git@2c8c9d45b164fece0629f27a0a201517d3918b5a#egg=caffeflow
+```
+
+It's recommended to have Caffe installed too, with its Python extensions. Note that it only supports Python 2.
+
 ## Development
 
 This utility is under development and the API **is not stable**. So, do not heavily rely on it.

@@ -10,22 +10,14 @@ import tensorflow as tf
 from tensorflow.python.framework import graph_io, graph_util
 from tensorflow.python.tools import freeze_graph
 
-from benderthon.util import check_input_checkpoint, restore_from_checkpoint
-
-
-def _output_node_names_string_as_list(output_node_names):
-    """Return a list of containing output_node_names if it's a string, otherwise return just output_node_names."""
-    if type(output_node_names) is unicode or type(output_node_names) is str:
-        return [output_node_names]
-    else:
-        return output_node_names
+from benderthon.util import check_input_checkpoint, output_node_names_string_as_list, restore_from_checkpoint
 
 
 def freeze_from_checkpoint(input_checkpoint, output_file_path, output_node_names):
     """Freeze and shrink the graph based on a checkpoint and the output node names."""
     check_input_checkpoint(input_checkpoint)
 
-    output_node_names = _output_node_names_string_as_list(output_node_names)
+    output_node_names = output_node_names_string_as_list(output_node_names)
 
     with tf.Session() as sess:
         restore_from_checkpoint(sess, input_checkpoint)
@@ -50,7 +42,7 @@ def save_graph_only_from_checkpoint(input_checkpoint, output_file_path, output_n
     """Save a small version of the graph based on a checkpoint and the output node names."""
     check_input_checkpoint(input_checkpoint)
 
-    output_node_names = _output_node_names_string_as_list(output_node_names)
+    output_node_names = output_node_names_string_as_list(output_node_names)
 
     with tf.Session() as sess:
         restore_from_checkpoint(sess, input_checkpoint)
