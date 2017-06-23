@@ -21,9 +21,10 @@ def main():
                                help="indicate that the variables are not converted to consts")
     args = parser.parse_args()
     if args.no_weights:
-        tf_freeze.save_graph_only_from_checkpoint(args.input_checkpoint, args.output_file, args.output_node_names)
+        tf_freeze.save_graph_only_from_checkpoint(args.input_checkpoint, args.output_file,
+                                                  args.output_node_names.split(','))
     else:
-        tf_freeze.freeze_from_checkpoint(args.input_checkpoint, args.output_file, args.output_node_names)
+        tf_freeze.freeze_from_checkpoint(args.input_checkpoint, args.output_file, args.output_node_names.split(','))
 
 
 if __name__ == '__main__':

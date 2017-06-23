@@ -14,8 +14,8 @@ from benderthon.util import check_input_checkpoint, restore_from_checkpoint
 
 
 def _output_node_names_string_as_list(output_node_names):
-    """Return a list of output node names based on output_node_names (a comma separated string)."""
-    if type(output_node_names) is str:
+    """Return a list of containing output_node_names if it's a string, otherwise return just output_node_names."""
+    if type(output_node_names) is unicode or type(output_node_names) is str:
         return [output_node_names]
     else:
         return output_node_names
