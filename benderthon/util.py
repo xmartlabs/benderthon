@@ -26,7 +26,7 @@ def restore_from_checkpoint(sess, input_checkpoint):
     return saver
 
 
-def _output_node_names_string_as_list(output_node_names):
+def output_node_names_string_as_list(output_node_names):
     """Return a list of containing output_node_names if it's a string, otherwise return just output_node_names."""
     if type(output_node_names) is unicode or type(output_node_names) is str:
         return [output_node_names]
