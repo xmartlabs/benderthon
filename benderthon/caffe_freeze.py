@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""Utility to freeze Caffe models."""
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
