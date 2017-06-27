@@ -12,6 +12,7 @@ from benderthon import tf_freeze, util
 
 
 def caffe_to_tensorflow_session(caffe_def_path, caffemodel_path, inputs, graph_name='Graph'):
+    """Create a TensorFlow Session from a Caffe model."""
     try:
         # noinspection PyUnresolvedReferences
         from caffeflow import convert
@@ -36,6 +37,7 @@ def caffe_to_tensorflow_session(caffe_def_path, caffemodel_path, inputs, graph_n
 
 
 def freeze(caffe_def_path, caffemodel_path, inputs, output_file_path, output_node_names, graph_name='Graph'):
+    """Freeze and shrink the graph based on a Caffe model, the input tensors and the output node names."""
     with caffe_to_tensorflow_session(caffe_def_path, caffemodel_path, inputs, graph_name=graph_name) as sess:
         saver = tf.train.Saver()
 
@@ -49,5 +51,14 @@ def freeze(caffe_def_path, caffemodel_path, inputs, output_file_path, output_nod
 
 
 def save_graph_only(caffe_def_path, caffemodel_path, inputs, output_file_path, output_node_names, graph_name='Graph'):
+    """Save a small version of the graph based on a Caffe model, the input tensors and the output node names."""
     with caffe_to_tensorflow_session(caffe_def_path, caffemodel_path, inputs, graph_name=graph_name) as sess:
         tf_freeze.save_graph_only(sess, output_file_path, output_node_names)
+
+
+def save_weights(caffe_def_path, caffemodel_path, inputs, output_path, graph_name='Graph', conv_var_names=None,
+                 conv_transpose_var_names=None):
+    """Save the weights of the trainable variables, each one in a different file in output_path."""
+    with caffe_to_tensorflow_session(caffe_def_path, caffemodel_path, inputs, graph_name=graph_name) as sess:
+        tf_freeze.save_weights(sess, output_path, conv_var_names=conv_var_names,
+                               conv_transpose_var_names=conv_transpose_var_names)
