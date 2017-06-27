@@ -58,7 +58,7 @@ def save_weights(sess, output_path, conv_var_names=None, conv_transpose_var_name
         conv_transpose_var_names = []
 
     for var in tf.trainable_variables():
-        filename = '{}-{}'.format(output_path, var.name.replace(':', '-'))
+        filename = '{}-{}'.format(output_path, var.name.replace(':', '-').replace('/', '-'))
 
         if var.name in conv_var_names:
             var = tf.transpose(var, perm=[3, 0, 1, 2])
