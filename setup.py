@@ -37,7 +37,7 @@ setup(
         ],
     },
     install_requires=[
-        'tensorflow>=1.2.0rc1',
+        'tensorflow>=1.2.0',
     ],
     author="Xmartlabs",
     author_email="hi@xmartlabs.com",
