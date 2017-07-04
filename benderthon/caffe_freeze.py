@@ -19,7 +19,7 @@ def dummy_context_mgr(obj):
 
 
 def caffe_to_tensorflow_session(caffe_def_path, caffemodel_path, inputs, graph_name='Graph',
-                                conversion_out_dir_path=None):
+                                conversion_out_dir_path=None, use_padding_same=False):
     """Create a TensorFlow Session from a Caffe model."""
     try:
         # noinspection PyUnresolvedReferences
@@ -31,7 +31,8 @@ def caffe_to_tensorflow_session(caffe_def_path, caffemodel_path, inputs, graph_n
         params_values_output_path = os.path.join(dir_path, 'params_values.npy')
         network_output_path = os.path.join(dir_path, 'network.py')
 
-        convert.convert(caffe_def_path, caffemodel_path, params_values_output_path, network_output_path, False)
+        convert.convert(caffe_def_path, caffemodel_path, params_values_output_path, network_output_path, False,
+                        use_padding_same=use_padding_same)
 
         network_module = imp.load_source('module.name', network_output_path)
         network_class = getattr(network_module, graph_name)
@@ -45,10 +46,11 @@ def caffe_to_tensorflow_session(caffe_def_path, caffemodel_path, inputs, graph_n
 
 
 def freeze(caffe_def_path, caffemodel_path, inputs, output_file_path, output_node_names, graph_name='Graph',
-           conversion_out_dir_path=None, checkpoint_out_path=None):
+           conversion_out_dir_path=None, checkpoint_out_path=None, use_padding_same=False):
     """Freeze and shrink the graph based on a Caffe model, the input tensors and the output node names."""
     with caffe_to_tensorflow_session(caffe_def_path, caffemodel_path, inputs, graph_name=graph_name,
-                                     conversion_out_dir_path=conversion_out_dir_path) as sess:
+                                     conversion_out_dir_path=conversion_out_dir_path,
+                                     use_padding_same=use_padding_same) as sess:
         saver = tf.train.Saver()
 
         with (dummy_context_mgr(checkpoint_out_path) or util.TemporaryDirectory()) as temp_dir_path:
@@ -60,15 +62,18 @@ def freeze(caffe_def_path, caffemodel_path, inputs, output_file_path, output_nod
             tf_freeze.freeze_from_checkpoint(checkpoint_path, output_file_path, output_node_names)
 
 
-def save_graph_only(caffe_def_path, caffemodel_path, inputs, output_file_path, output_node_names, graph_name='Graph'):
+def save_graph_only(caffe_def_path, caffemodel_path, inputs, output_file_path, output_node_names, graph_name='Graph',
+                    use_padding_same=False):
     """Save a small version of the graph based on a Caffe model, the input tensors and the output node names."""
-    with caffe_to_tensorflow_session(caffe_def_path, caffemodel_path, inputs, graph_name=graph_name) as sess:
+    with caffe_to_tensorflow_session(caffe_def_path, caffemodel_path, inputs, graph_name=graph_name,
+                                     use_padding_same=use_padding_same) as sess:
         tf_freeze.save_graph_only(sess, output_file_path, output_node_names)
 
 
 def save_weights(caffe_def_path, caffemodel_path, inputs, output_path, graph_name='Graph', conv_var_names=None,
-                 conv_transpose_var_names=None):
+                 conv_transpose_var_names=None, use_padding_same=False):
     """Save the weights of the trainable variables, each one in a different file in output_path."""
-    with caffe_to_tensorflow_session(caffe_def_path, caffemodel_path, inputs, graph_name=graph_name) as sess:
+    with caffe_to_tensorflow_session(caffe_def_path, caffemodel_path, inputs, graph_name=graph_name,
+                                     use_padding_same=use_padding_same) as sess:
         tf_freeze.save_weights(sess, output_path, conv_var_names=conv_var_names,
                                conv_transpose_var_names=conv_transpose_var_names)
