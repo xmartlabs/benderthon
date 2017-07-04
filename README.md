@@ -60,10 +60,8 @@ This module cannot be accessed from the command line utility, it should be used 
 You need `caffeflow` package installed first:
 
 ```bash
-pip install -e git://github.com/xmartlabs/caffeflow.git@2c8c9d45b164fece0629f27a0a201517d3918b5a#egg=caffeflow
+pip install -e git://github.com/xmartlabs/caffeflow.git@8a715ed#egg=caffeflow
 ```
-
-It's recommended to have Caffe installed too, with its Python extensions. Note that it only supports Python 2.
 
 ## Development
 
