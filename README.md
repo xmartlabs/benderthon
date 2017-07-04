@@ -60,7 +60,7 @@ This module cannot be accessed from the command line utility, it should be used 
 You need `caffeflow` package installed first:
 
 ```bash
-pip install -e git://github.com/xmartlabs/caffeflow.git@8a715ed#egg=caffeflow
+pip install -e git://github.com/xmartlabs/caffeflow.git@4618f89#egg=caffeflow
 ```
 
 ## Development

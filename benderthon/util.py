@@ -6,8 +6,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import shutil
 import tempfile
 import warnings
-import weakref
 
+from six import string_types
 import tensorflow as tf
 from tensorflow.python.training import saver as saver_lib
 
@@ -28,7 +28,7 @@ def restore_from_checkpoint(sess, input_checkpoint):
 
 def output_node_names_string_as_list(output_node_names):
     """Return a list of containing output_node_names if it's a string, otherwise return just output_node_names."""
-    if type(output_node_names) is unicode or type(output_node_names) is str:
+    if isinstance(output_node_names, string_types):
         return [output_node_names]
     else:
         return output_node_names
