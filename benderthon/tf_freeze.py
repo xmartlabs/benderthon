@@ -67,7 +67,8 @@ def save_weights(sess, output_path, conv_var_names=None, conv_transpose_var_name
 
         value = sess.run(var)
 
-        with open(filename, b'w') as file_:
+        # noinspection PyTypeChecker
+        with open(filename, 'w') as file_:
             value.tofile(file_)
 
 
