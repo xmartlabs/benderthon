@@ -33,8 +33,8 @@ def main():
                                                   args.output_node_names.split(','))
     elif args.only_weights:
         tf_freeze.save_weights_from_checkpoint(args.input_checkpoint, args.output_path,
-                                               conv_vars=args.conv_vars.split(','),
-                                               conv_transpose_vars=args.conv_transpose_vars.split(','))
+                                               conv_var_names=args.conv_vars.split(','),
+                                               conv_transpose_var_names=args.conv_transpose_vars.split(','))
     else:
         tf_freeze.freeze_from_checkpoint(args.input_checkpoint, args.output_path, args.output_node_names.split(','))
 

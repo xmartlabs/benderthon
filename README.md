@@ -2,7 +2,7 @@
 
 Set of utilities to work easier with [Bender](https://github.com/xmartlabs/Bender).
 
-Currently there's only *tf-freeze*, but we are working on more stuff!
+Currently there's support for TensorFlow and Caffe, but we are working on more stuff!
 
 Works on Python 2.7.+ and 3.+, with Tensorflow 1.2+.
 
@@ -51,6 +51,16 @@ To save the weights in a separate path for later processing:
 
 ```bash
 benderthon tf-freeze --only-weights checkpoints/mnist.ckpt weights/ Prediction
+```
+
+## caffe-freeze
+
+This module cannot be accessed from the command line utility, it should be used from Python code, importing `benderthon.caffe_freeze`.
+
+You need `caffeflow` package installed first:
+
+```bash
+pip install -e git://github.com/xmartlabs/caffeflow.git@4618f89#egg=caffeflow
 ```
 
 ## Development
