@@ -6,7 +6,7 @@ import pypandoc
 
 setup(
     name="benderthon",
-    version="0.2.0",
+    version="0.2.1",
     description="Set of utilities to work easier with Bender.",
     long_description=pypandoc.convert('README.md', 'rst'),
     url="https://github.com/xmartlabs/benderthon",
