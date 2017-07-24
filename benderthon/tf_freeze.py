@@ -29,16 +29,16 @@ def freeze_from_checkpoint(input_checkpoint, output_file_path, output_node_names
                                                   clear_devices=True, initializer_nodes='')
 
 
-def save_graph_only(sess, output_file_path, output_node_names):
+def save_graph_only(sess, output_file_path, output_node_names, as_text=False):
     """Save a small version of the graph based on a session and the output node names."""
     for node in sess.graph_def.node:
         node.device = ''
     graph_def = graph_util.extract_sub_graph(sess.graph_def, output_node_names)
     output_dir, output_filename = os.path.split(output_file_path)
-    graph_io.write_graph(graph_def, output_dir, output_filename, as_text=True)
+    graph_io.write_graph(graph_def, output_dir, output_filename, as_text=as_text)
 
 
-def save_graph_only_from_checkpoint(input_checkpoint, output_file_path, output_node_names):
+def save_graph_only_from_checkpoint(input_checkpoint, output_file_path, output_node_names, as_text=False):
     """Save a small version of the graph based on a checkpoint and the output node names."""
     check_input_checkpoint(input_checkpoint)
 
@@ -46,7 +46,7 @@ def save_graph_only_from_checkpoint(input_checkpoint, output_file_path, output_n
 
     with tf.Session() as sess:
         restore_from_checkpoint(sess, input_checkpoint)
-        save_graph_only(sess, output_file_path, output_node_names)
+        save_graph_only(sess, output_file_path, output_node_names, as_text=as_text)
 
 
 def save_weights(sess, output_path, conv_var_names=None, conv_transpose_var_names=None):
