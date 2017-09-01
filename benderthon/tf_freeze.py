@@ -10,7 +10,8 @@ import tensorflow as tf
 from tensorflow.python.framework import graph_io, graph_util
 from tensorflow.python.tools import freeze_graph
 
-from benderthon.util import check_input_checkpoint, output_node_names_string_as_list, restore_from_checkpoint
+from benderthon.util import check_input_checkpoint, output_node_names_string_as_list, restore_from_checkpoint,\
+    TemporaryDirectory
 
 
 def freeze_from_checkpoint(input_checkpoint, output_file_path, output_node_names):
@@ -27,6 +28,15 @@ def freeze_from_checkpoint(input_checkpoint, output_file_path, output_node_names
                                                   restore_op_name='save/restore_all',
                                                   filename_tensor_name='save/Const:0', output_graph=output_file_path,
                                                   clear_devices=True, initializer_nodes='')
+
+
+def freeze(sess, output_file_path, output_node_names):
+    """Freeze and shrink the graph based on a session and the output node names."""
+    with TemporaryDirectory() as temp_dir_name:
+        checkpoint_path = os.path.join(temp_dir_name, 'model.ckpt')
+        tf.train.Saver().save(sess, checkpoint_path)
+
+        freeze_from_checkpoint(checkpoint_path, output_file_path, output_node_names)
 
 
 def save_graph_only(sess, output_file_path, output_node_names, as_text=False):
