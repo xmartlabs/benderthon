@@ -35,7 +35,7 @@ benderthon tf-freeze checkpoint_path.ckpt graph_with_weights.pb Tanh
 
 ### Sample
 
-The file `sample.py` contains a network example for MNIST dataset with 2 convolutional layers and 2 dens layers. If you run it, it will generate checkpoints files with prefix `checkpoints/mnist.ckpt`:
+The file `sample.py` contains a network example for MNIST dataset with 2 convolutional layers and 2 dense layers. If you run it, it will generate checkpoints files with prefix `checkpoints/mnist.ckpt`:
 
 ```bash
 ./sample.py
