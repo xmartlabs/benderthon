@@ -6,7 +6,7 @@ import pypandoc
 
 setup(
     name="benderthon",
-    version="0.2.2",
+    version="0.3.0",
     description="Set of utilities to work easier with Bender.",
     long_description=pypandoc.convert('README.md', 'rst'),
     url="https://github.com/xmartlabs/benderthon",
@@ -36,9 +36,6 @@ setup(
             'benderthon = benderthon.cmdline:main',
         ],
     },
-    install_requires=[
-        'tensorflow>=1.2.0',
-    ],
     author="Xmartlabs",
     author_email="hi@xmartlabs.com",
     maintainer="Santiago Castro",

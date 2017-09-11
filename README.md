@@ -12,6 +12,15 @@ To install:
 pip install benderthon
 ```
 
+TensorFlow is required too. The simplest way to install it is:
+
+```bash
+pip install tensorflow
+```
+
+There are other ways, see [Installing Tensorflow](https://www.tensorflow.org/install/). Benderthon does not install it
+by default to let the usage of a custom installation.
+
 ## tf-freeze
 
 Utility to convert **TensorFlow** checkpoints into minimal frozen **graphs**.
