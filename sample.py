@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import division, print_function, unicode_literals
 
+from benderthon import tf_freeze
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 
@@ -91,7 +92,9 @@ def main():
         acc = sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0})
         print("Test accuracy: {}".format(acc))
 
-        saver.save(sess, 'checkpoints/mnist.ckpt')
+        saver.save(sess, 'checkpoints/mnist.ckpt') # Just in case
+
+        tf_freeze.freeze(sess, 'output/mnist.pb', ['Prediction'])
 
 
 if __name__ == '__main__':

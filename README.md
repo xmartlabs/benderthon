@@ -27,28 +27,44 @@ Utility to convert **TensorFlow** checkpoints into minimal frozen **graphs**.
 
 ### Usage
 
-To take the checkpoint in `checkpoint_path.ckpt`, whose output is yielded by the node named `Tanh`, and save it to `graph_with_weights.pb`:
+#### From a checkpoint
+
+To take the checkpoint `checkpoint_path.ckpt`, whose output is yielded by the node named `Tanh`, and save it to `graph_with_weights.pb`:
 
 ```bash
 benderthon tf-freeze checkpoint_path.ckpt graph_with_weights.pb Tanh
 ```
 
+#### From code
+
+If you don't have a checkpoint or prefer to run it from code, this is the way to go. This is the same example as above but from code:
+
+```python
+from benderthon import tf_freeze
+
+// …
+
+with tf.Session() as sess:
+    // …
+
+    tf_freeze.freeze(sess, 'graph_with_weights.pb', ['Tanh'])
+```
+
 ### Sample
 
-The file `sample.py` contains a network example for MNIST dataset with 2 convolutional layers and 2 dense layers. If you run it, it will generate checkpoints files with prefix `checkpoints/mnist.ckpt`:
+The file `sample.py` contains a network example for MNIST dataset with 2 convolutional layers and 2 dense layers. If you run it, it will generate a minimal protobuf for with the weights frozen to run in Bender in `output/mnist.pb`:
 
 ```bash
 ./sample.py
 ```
 
-Then you can get a minimal protobuf version with the weights frozen:
+The generated file occupies **half** the original checkpoints (26MB to 13MB).
+
+The script will also generate checkpoints files with prefix `checkpoints/mnist.ckpt`. So you could have generated the protobuf from it:
 
 ```bash
 benderthon tf-freeze checkpoints/mnist.ckpt output/mnist.pb Prediction
 ```
-
-The generated file occupies **half** the original checkpoints (26MB to 13MB).
-
 
 You can also get only the graph, which occupies just **13kB**:
 
